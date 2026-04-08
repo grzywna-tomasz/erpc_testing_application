@@ -17,4 +17,9 @@ Currently the application is tested using wsl
 ## Generate files
 interface.erpc is where the interfaces are defined.
 "./erpc/build/erpcgen/erpcgen --output generated interface.erpc"
+## Build project
+CMakeLists.txt in main directory is used to build both server and client. Use preset working with WSL installed gcc and g++. 
+## Running project
+Open one terminal and run wsl. Then just run the application - server_ex and then client_ex in another wsl console.
+Please verify if you have a "test" version of application. Backward compatibility might not be supported.
 

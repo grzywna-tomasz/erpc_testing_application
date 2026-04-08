@@ -1,0 +1,11 @@
+program example
+
+enum status
+{
+    ERPC_OK,
+    ERPC_NOT_OK,
+};
+
+interface Communication {
+    SendRequest(in uint8 test_variable) -> status
+}

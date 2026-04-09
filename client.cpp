@@ -5,20 +5,19 @@
 #include "erpc_crc16.hpp"
 #include "example_client.hpp"
 #include <iostream>
+#include <thread>
+#include <chrono>
 
-using namespace erpc;
-using namespace erpcShim;
-
-class MyMessageBufferFactory : public MessageBufferFactory
+class MyMessageBufferFactory : public erpc::MessageBufferFactory
 {
 public:
-    virtual MessageBuffer create()
+    virtual erpc::MessageBuffer create()
     {
         uint8_t *buf = new uint8_t[1024];
-        return MessageBuffer(buf, 1024);
+        return erpc::MessageBuffer(buf, 1024);
     }
 
-    virtual void dispose(MessageBuffer *buf)
+    virtual void dispose(erpc::MessageBuffer *buf)
     {
         erpc_assert(buf);
         if (*buf)
@@ -30,8 +29,8 @@ public:
 
 int main()
 {
-    TCPTransport transport("127.0.0.1", 12345, false);
-    Crc16 crc16;
+    erpc::TCPTransport transport("127.0.0.1", 12345, false);
+    erpc::Crc16 crc16;
     transport.setCrc16(&crc16);
     if (transport.open() != kErpcStatus_Success)
     {
@@ -40,19 +39,24 @@ int main()
     }
 
     MyMessageBufferFactory msgFactory;
-    BasicCodecFactory codecFactory;
-    ClientManager clientManager;
+    erpc::BasicCodecFactory codecFactory;
+    erpc::ClientManager clientManager;
     clientManager.setMessageBufferFactory(&msgFactory);
     clientManager.setTransport(&transport);
     clientManager.setCodecFactory(&codecFactory);
-    Communication_client client(&clientManager);
+    erpcShim::Communication_client client(&clientManager);
 
-    // Example communication 
-    uint8_t value = 42;
-    status result = client.SendRequest(value);
+    while(1)
+    {
+        // Example communication 
+        uint8_t value = 42;
+        status result = client.SendRequest(value);
+    
+        std::cout << "Client sent: " << static_cast<int>(value) << std::endl;
+        std::cout << "Client received status: " << static_cast<int>(result) << std::endl;
 
-    std::cout << "Client sent: " << static_cast<int>(value) << std::endl;
-    std::cout << "Client received status: " << static_cast<int>(result) << std::endl;
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+    }
 
     transport.close();
 

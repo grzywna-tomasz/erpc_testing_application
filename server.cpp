@@ -32,7 +32,7 @@ public:
     virtual status SendRequest(uint8_t test_variable) override
     {
         std::cout << "Server received: " << (int)test_variable << std::endl;
-        return (test_variable > 0) ? ERPC_OK : ERPC_NOT_OK;
+        return ERPC_OK;
     }
 };
 
@@ -62,6 +62,7 @@ int main()
 
     std::cout << "eRPC TCP server listening on " << host << ":" << port << std::endl;
 
+    /* Run untill connection is closed */
     server.run();
 
     return 0;

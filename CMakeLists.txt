@@ -12,24 +12,24 @@ add_subdirectory(erpc)
 
 ############################################################
 # server
-add_executable(server_ex)
+# add_executable(server_ex)
 
-target_sources(server_ex
-    PRIVATE
-        server.cpp
-        generated/example_interface.cpp
-        generated/example_server.cpp
-)
+# target_sources(server_ex
+#     PRIVATE
+#         server.cpp
+#         generated/example_interface.cpp
+#         generated/example_server.cpp
+# )
 
-target_include_directories(server_ex
-    PRIVATE
-        generated
-)
+# target_include_directories(server_ex
+#     PRIVATE
+#         generated
+# )
 
-target_link_libraries(server_ex
-    PRIVATE
-    erpc
-)
+# target_link_libraries(server_ex
+#     PRIVATE
+#     erpc
+# )
 
 ############################################################
 # client

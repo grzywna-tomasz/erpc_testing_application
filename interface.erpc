@@ -1,11 +1,38 @@
 program example
 
-enum status
+enum Erpc_Status_t
 {
     ERPC_OK,
     ERPC_NOT_OK,
 };
 
+enum Erpc_SwVersion_t
+{
+    ERPC_INTERFACE_VERSION = 0x0100,
+};
+
+enum Erpc_DetError_t
+{
+    DET_NO_ERROR = 0,
+    DET_UDP_CONNECTION_FAILED_TO_CREATE = 0x100,
+    DET_UDP_SENDING_ERROR,
+    DET_SERVER_FAILED_TO_POLL = 0x200,
+    DET_TRANSPORT_LWIP_TCP_CRC_ERROR = 0x300,
+    DET_MALLOC_FAILED_ERPC_SERVER = 0x10000
+};
+
+struct Erpc_ErrorInfo_t
+{
+    Erpc_DetError_t error_id
+    list<uint8> additional_data
+}
+
+// In this file it is better not to remove anything - as a backward compatibility. Just add new feeature instead.
 interface Communication {
-    SendRequest(in uint8 test_variable) -> status
+    Unused_TestRequest(in uint8 test_variable) -> Erpc_Status_t
+    
+    AppVersion_Get() -> uint16
+    Errors_GetAll() -> list<Erpc_ErrorInfo_t>
+    Errors_ClearAll() -> Erpc_Status_t
+    
 }

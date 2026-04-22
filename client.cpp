@@ -9,6 +9,7 @@
 #include <chrono>
 #include <sstream>
 #include <iomanip>
+#include "erpc_port.h"
 
 template< typename T >
 std::string int_to_hex( T i )
@@ -99,14 +100,35 @@ public:
 
     void Errors_GetAll()
     {
-        list_Erpc_ErrorInfo_t_1_t *errors = m_communication_client->Errors_GetAll();
-        if (errors)
+        list_Erpc_ErrorInfo_t_1_t *errors = (list_Erpc_ErrorInfo_t_1_t *)erpc_malloc(sizeof(list_Erpc_ErrorInfo_t_1_t));
+        Erpc_Status_t result {m_communication_client->Errors_GetAll(errors)};
+        if ((ERPC_OK == result) && (errors))
         {
             std::cout << "Received " << errors->elementsCount << " errors:\n";
             for (uint32_t i = 0; i < errors->elementsCount; ++i)
             {
                 m_error_printer.print(errors->elements[i]);
             }
+        }
+        else
+        {
+            std::cout << "Failed to receive Errors_GetAll\n";
+        }
+
+        if (errors)
+        {
+            if (errors->elements)
+            {
+                for (int i = 0; i < errors->elementsCount; ++i)
+                {
+                    if (errors->elements[i].additional_data.elements)
+                    {
+                        erpc_free(errors->elements[i].additional_data.elements);
+                    }
+                }
+                erpc_free(errors->elements);
+            }
+            erpc_free(errors);
         }
     }
 

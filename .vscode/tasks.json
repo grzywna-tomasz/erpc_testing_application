@@ -24,6 +24,15 @@
                 "kind": "build",
                 "isDefault": true
             }
+		},
+		{
+			"label": "Copy eRPC generated files",
+			"type": "shell",
+			"command": "cp -r -f generated/* ../Nucleo_F439ZI/src/erpc_generated/",
+			"group": {
+                "kind": "build",
+                "isDefault": true
+            }
 		}
 	]
 }

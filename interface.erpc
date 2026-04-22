@@ -32,7 +32,7 @@ interface Communication {
     Unused_TestRequest(in uint8 test_variable) -> Erpc_Status_t
     
     AppVersion_Get() -> uint16
-    Errors_GetAll() -> list<Erpc_ErrorInfo_t>
+    Errors_GetAll(out list<Erpc_ErrorInfo_t> out_errors) -> Erpc_Status_t
     Errors_ClearAll() -> Erpc_Status_t
     
 }

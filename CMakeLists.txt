@@ -9,6 +9,7 @@ set(CMAKE_PROJECT_NAME all_examples)
 project(${CMAKE_PROJECT_NAME} C ASM CXX)
 
 add_subdirectory(erpc)
+add_subdirectory(ext/json)
 
 ############################################################
 # server
@@ -51,4 +52,5 @@ target_include_directories(client_ex
 target_link_libraries(client_ex
     PRIVATE
     erpc
+    nlohmann_json::nlohmann_json
 ) 

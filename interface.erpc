@@ -8,7 +8,7 @@ enum Erpc_Status_t
 
 enum Erpc_SwVersion_t
 {
-    ERPC_INTERFACE_VERSION = 0x0100,
+    ERPC_INTERFACE_VERSION = 0x0101,
 };
 
 enum Erpc_DetError_t
@@ -34,5 +34,7 @@ interface Communication {
     AppVersion_Get() -> uint16
     Errors_GetAll(out list<Erpc_ErrorInfo_t> out_errors) -> Erpc_Status_t
     Errors_ClearAll() -> Erpc_Status_t
-    
+    ErpcVersion_Get() -> Erpc_SwVersion_t
+    Memory_Read(uint32 address, uint32 size, out list <uint8>out_data) -> Erpc_Status_t
+    Memory_Write(uint32 address, in list <uint8>in_data) -> Erpc_Status_t
 }
